@@ -3,40 +3,65 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityMeasurementAppTest {
 
+    // ===== FEET TESTS =====
+
     @Test
     public void testFeetEquality_SameValue() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-        QuantityMeasurementApp.Feet f2 = new QuantityMeasurementApp.Feet(1.0);
-
-        assertTrue(f1.equals(f2));
+        assertTrue(new QuantityMeasurementApp.Feet(1.0)
+                .equals(new QuantityMeasurementApp.Feet(1.0)));
     }
 
     @Test
     public void testFeetEquality_DifferentValue() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-        QuantityMeasurementApp.Feet f2 = new QuantityMeasurementApp.Feet(2.0);
-
-        assertFalse(f1.equals(f2));
+        assertFalse(new QuantityMeasurementApp.Feet(1.0)
+                .equals(new QuantityMeasurementApp.Feet(2.0)));
     }
 
     @Test
     public void testFeetEquality_NullComparison() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-
-        assertFalse(f1.equals(null));
+        assertFalse(new QuantityMeasurementApp.Feet(1.0).equals(null));
     }
 
     @Test
     public void testFeetEquality_DifferentClass() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
-
-        assertFalse(f1.equals("1.0"));
+        assertFalse(new QuantityMeasurementApp.Feet(1.0)
+                .equals("1.0"));
     }
 
     @Test
     public void testFeetEquality_SameReference() {
-        QuantityMeasurementApp.Feet f1 = new QuantityMeasurementApp.Feet(1.0);
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        assertTrue(f.equals(f));
+    }
 
-        assertTrue(f1.equals(f1));
+    // ===== INCHES TESTS =====
+
+    @Test
+    public void testInchesEquality_SameValue() {
+        assertTrue(new QuantityMeasurementApp.Inches(1.0)
+                .equals(new QuantityMeasurementApp.Inches(1.0)));
+    }
+
+    @Test
+    public void testInchesEquality_DifferentValue() {
+        assertFalse(new QuantityMeasurementApp.Inches(1.0)
+                .equals(new QuantityMeasurementApp.Inches(2.0)));
+    }
+
+    @Test
+    public void testInchesEquality_NullComparison() {
+        assertFalse(new QuantityMeasurementApp.Inches(1.0).equals(null));
+    }
+
+    @Test
+    public void testInchesEquality_DifferentClass() {
+        assertFalse(new QuantityMeasurementApp.Inches(1.0)
+                .equals("1.0"));
+    }
+
+    @Test
+    public void testInchesEquality_SameReference() {
+        QuantityMeasurementApp.Inches i = new QuantityMeasurementApp.Inches(1.0);
+        assertTrue(i.equals(i));
     }
 }
