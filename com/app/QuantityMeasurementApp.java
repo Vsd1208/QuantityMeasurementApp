@@ -1,64 +1,85 @@
 public class QuantityMeasurementApp {
 
-    // ===== FEET CLASS =====
-    public static class Feet {
+    // ================= ENUM =================
+    public enum LengthUnit {
+        FEET(12.0),
+        INCHES(1.0);
 
-        private final double value;
+        private final double conversionFactor;
 
-        public Feet(double value) {
-            this.value = value;
+        LengthUnit(double conversionFactor) {
+            this.conversionFactor = conversionFactor;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-
-            Feet feet = (Feet) obj;
-            return Double.compare(this.value, feet.value) == 0;
+        public double getConversionFactor() {
+            return conversionFactor;
         }
     }
 
-    // ===== INCHES CLASS =====
-    public static class Inches {
+    // ================= GENERIC CLASS =================
+    public static class Length {
 
         private final double value;
+        private final LengthUnit unit;
 
-        public Inches(double value) {
+        public Length(double value, LengthUnit unit) {
             this.value = value;
+            this.unit = unit;
+        }
+
+        // Convert everything to INCHES (base unit)
+        private double convertToBaseUnit() {
+            return this.value * unit.getConversionFactor();
+        }
+
+        public boolean compare(Length that) {
+            return Double.compare(this.convertToBaseUnit(),
+                    that.convertToBaseUnit()) == 0;
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(Object o) {
 
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
 
-            Inches inches = (Inches) obj;
-            return Double.compare(this.value, inches.value) == 0;
+            Length length = (Length) o;
+            return this.compare(length);
         }
     }
 
-    // ===== DEMO METHODS =====
+    // ================= DEMO METHODS =================
+
+    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
+        return l1.equals(l2);
+    }
 
     public static void demonstrateFeetEquality() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(1.0);
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(1.0, LengthUnit.FEET);
 
-        System.out.println("Feet Equal? " + f1.equals(f2));
+        System.out.println("Feet Equal? " + l1.equals(l2));
     }
 
     public static void demonstrateInchesEquality() {
-        Inches i1 = new Inches(1.0);
-        Inches i2 = new Inches(1.0);
+        Length l1 = new Length(1.0, LengthUnit.INCHES);
+        Length l2 = new Length(1.0, LengthUnit.INCHES);
 
-        System.out.println("Inches Equal? " + i1.equals(i2));
+        System.out.println("Inches Equal? " + l1.equals(l2));
     }
 
-    // ===== MAIN METHOD =====
+    public static void demonstrateFeetInchesComparison() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
+
+        System.out.println("Feet vs Inches Equal? " + l1.equals(l2));
+    }
+
+    // ================= MAIN =================
     public static void main(String[] args) {
+
         demonstrateFeetEquality();
         demonstrateInchesEquality();
+        demonstrateFeetInchesComparison();
     }
 }
