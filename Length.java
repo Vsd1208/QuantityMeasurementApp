@@ -55,7 +55,7 @@ public class Length {
         return Math.round(val * 100.0) / 100.0;
     }
 
-    // ✅ UC5 Conversion
+    // ---------- UC5 ----------
     public Length convertTo(LengthUnit targetUnit) {
         if (targetUnit == null) {
             throw new IllegalArgumentException("Target unit cannot be null");
@@ -67,8 +67,21 @@ public class Length {
         return new Length(round(converted), targetUnit);
     }
 
-    // ✅ UC6 Addition
+    // ---------- UC6 ----------
     public Length add(Length that) {
+        return addAndConvert(that, this.unit);
+    }
+
+    // ---------- UC7 ----------
+    public Length add(Length that, LengthUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        return addAndConvert(that, targetUnit);
+    }
+
+    // 🔥 Core reusable logic
+    private Length addAndConvert(Length that, LengthUnit targetUnit) {
         if (that == null) {
             throw new IllegalArgumentException("Cannot add null Length");
         }
@@ -78,11 +91,12 @@ public class Length {
 
         double sumBase = base1 + base2;
 
-        double result = this.unit.fromBase(sumBase);
+        double result = targetUnit.fromBase(sumBase);
 
-        return new Length(round(result), this.unit);
+        return new Length(round(result), targetUnit);
     }
 
+    // ---------- Equality ----------
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
