@@ -51,6 +51,11 @@ public class Length {
         return unit.toBase(value);
     }
 
+    private double round(double val) {
+        return Math.round(val * 100.0) / 100.0;
+    }
+
+    // ✅ UC5 Conversion
     public Length convertTo(LengthUnit targetUnit) {
         if (targetUnit == null) {
             throw new IllegalArgumentException("Target unit cannot be null");
@@ -62,8 +67,20 @@ public class Length {
         return new Length(round(converted), targetUnit);
     }
 
-    private double round(double value) {
-        return Math.round(value * 100.0) / 100.0;
+    // ✅ UC6 Addition
+    public Length add(Length that) {
+        if (that == null) {
+            throw new IllegalArgumentException("Cannot add null Length");
+        }
+
+        double base1 = this.toBaseInches();
+        double base2 = that.toBaseInches();
+
+        double sumBase = base1 + base2;
+
+        double result = this.unit.fromBase(sumBase);
+
+        return new Length(round(result), this.unit);
     }
 
     @Override
