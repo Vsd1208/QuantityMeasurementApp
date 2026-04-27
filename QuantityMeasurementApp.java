@@ -2,33 +2,50 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        return l1.equals(l2);
+    // ===== WEIGHT METHODS =====
+
+    public static boolean demonstrateWeightEquality(Weight w1, Weight w2) {
+        return w1.equals(w2);
     }
 
-    public static Length demonstrateLengthConversion(double value, LengthUnit from, LengthUnit to) {
-        return new Length(value, from).convertTo(to);
+    public static boolean demonstrateWeightComparison(double v1, WeightUnit u1,
+                                                      double v2, WeightUnit u2) {
+        return new Weight(v1, u1).equals(new Weight(v2, u2));
     }
 
-    public static Length demonstrateLengthAddition(Length l1, Length l2) {
-        return l1.add(l2);
+    public static Weight demonstrateWeightConversion(double value,
+                                                     WeightUnit from,
+                                                     WeightUnit to) {
+        return new Weight(value, from).convertTo(to);
     }
 
-    public static Length demonstrateLengthAddition(Length l1, Length l2, LengthUnit targetUnit) {
-        return l1.add(l2, targetUnit);
+    public static Weight demonstrateWeightConversion(Weight weight,
+                                                     WeightUnit to) {
+        return weight.convertTo(to);
     }
+
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2) {
+        return w1.add(w2);
+    }
+
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2,
+                                                   WeightUnit targetUnit) {
+        return w1.add(w2, targetUnit);
+    }
+
+    // ===== MAIN =====
 
     public static void main(String[] args) {
 
-        Length feet = new Length(3, LengthUnit.FEET);
-        Length yard = new Length(1, LengthUnit.YARDS);
+        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(1000, WeightUnit.GRAM);
 
-        System.out.println("3 feet equals 1 yard? " + feet.equals(yard));
+        System.out.println("Equal? " + demonstrateWeightEquality(w1, w2));
 
-        Length converted = demonstrateLengthConversion(1, LengthUnit.FEET, LengthUnit.INCHES);
-        System.out.println("1 foot in inches: " + converted);
+        Weight converted = demonstrateWeightConversion(2, WeightUnit.POUND, WeightUnit.GRAM);
+        System.out.println("2 pounds in grams: " + converted);
 
-        Length sum = demonstrateLengthAddition(feet, yard, LengthUnit.FEET);
-        System.out.println("Sum in feet: " + sum);
+        Weight sum = demonstrateWeightAddition(w1, w2, WeightUnit.KILOGRAM);
+        System.out.println("Sum in kg: " + sum);
     }
 }
