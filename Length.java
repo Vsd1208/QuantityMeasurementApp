@@ -2,47 +2,66 @@ package com.apps.quantitymeasurement;
 
 import java.util.Objects;
 
-public class Length {
+public class Weight {
 
     private double value;
-    private LengthUnit unit;
+    private WeightUnit unit;
 
-    public Length(double value, LengthUnit unit) {
+    public Weight(double value, WeightUnit unit) {
         this.value = value;
         this.unit = unit;
     }
 
-    // Convert to another unit
-    public Length convertTo(LengthUnit targetUnit) {
-        double baseValue = convertToBaseUnit();
-        double convertedValue = targetUnit.convertFromBaseUnit(baseValue);
-        return new Length(convertedValue, targetUnit);
+    public double getValue() {
+        return value;
     }
 
-    // Add two lengths (result in same unit as this)
-    public Length add(Length other) {
-        double sum = this.convertToBaseUnit() + other.convertToBaseUnit();
-        double result = unit.convertFromBaseUnit(sum);
-        return new Length(result, unit);
+    public WeightUnit getUnit() {
+        return unit;
     }
 
-    // Add with target unit
-    public Length add(Length other, LengthUnit targetUnit) {
+    // Convert weight to another unit
+    public Weight convertTo(WeightUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        double base = convertToBaseUnit();
+        double converted = targetUnit.convertFromBaseUnit(base);
+
+        return new Weight(converted, targetUnit);
+    }
+
+    // Add weights (same unit as this)
+    public Weight add(Weight other) {
+        return addAndConvert(other, this.unit);
+    }
+
+    // Add weights with target unit
+    public Weight add(Weight other, WeightUnit targetUnit) {
+        return addAndConvert(other, targetUnit);
+    }
+
+    private Weight addAndConvert(Weight other, WeightUnit targetUnit) {
         double sum = this.convertToBaseUnit() + other.convertToBaseUnit();
         double result = targetUnit.convertFromBaseUnit(sum);
-        return new Length(result, targetUnit);
+        return new Weight(result, targetUnit);
     }
 
     private double convertToBaseUnit() {
         return unit.convertToBaseUnit(value);
     }
 
+    private boolean compare(Weight other) {
+        return Double.compare(this.convertToBaseUnit(), other.convertToBaseUnit()) == 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Length)) return false;
-        Length that = (Length) o;
-        return Double.compare(this.convertToBaseUnit(), that.convertToBaseUnit()) == 0;
+        if (!(o instanceof Weight)) return false;
+        Weight that = (Weight) o;
+        return compare(that);
     }
 
     @Override
