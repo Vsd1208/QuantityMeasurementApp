@@ -1,31 +1,36 @@
 package com.apps.quantitymeasurement;
 
-public enum WeightUnit {
+public enum LengthUnit implements IMeasurable {
 
-    MILLIGRAM(0.001),
-    GRAM(1.0),
-    KILOGRAM(1000.0),
-    POUND(453.592),
-    TONNE(1_000_000.0);
+    FEET(12.0),
+    INCHES(1.0),
+    YARDS(36.0),
+    CENTIMETERS(0.393701);
 
     private final double conversionFactor;
 
-    WeightUnit(double conversionFactor) {
+    LengthUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
 
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
 
-    // Convert to base unit (grams)
+    @Override
     public double convertToBaseUnit(double value) {
         return round(value * conversionFactor);
     }
 
-    // Convert from base unit (grams)
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return round(baseValue / conversionFactor);
+    }
+
+    @Override
+    public String getUnitName() {
+        return name();
     }
 
     private double round(double value) {
