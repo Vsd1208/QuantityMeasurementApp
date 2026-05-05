@@ -187,4 +187,70 @@ public class QuantityMeasurementAppTest {
 
         assertEquals(5.0, result.getValue()); // 1ft + 1ft + 3ft = 5ft
     }
+
+    @Test
+    void testSubtraction_CrossUnit_Length() {
+        Quantity<LengthUnit> feet = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<LengthUnit> inches = new Quantity<>(6, LengthUnit.INCHES);
+
+        Quantity<LengthUnit> result = feet.subtract(inches);
+
+        assertEquals(9.5, result.getValue());
+    }
+
+    @Test
+    void testSubtraction_ResultNegative() {
+        Quantity<LengthUnit> a = new Quantity<>(5, LengthUnit.FEET);
+        Quantity<LengthUnit> b = new Quantity<>(10, LengthUnit.FEET);
+
+        Quantity<LengthUnit> result = a.subtract(b);
+
+        assertEquals(-5.0, result.getValue());
+    }
+
+    @Test
+    void testSubtraction_ExplicitUnit() {
+        Quantity<VolumeUnit> l = new Quantity<>(5, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> l2 = new Quantity<>(2, VolumeUnit.LITRE);
+
+        Quantity<VolumeUnit> result =
+                l.subtract(l2, VolumeUnit.MILLILITRE);
+
+        assertEquals(3000.0, result.getValue());
+    }
+
+    @Test
+    void testDivision_SameUnit() {
+        Quantity<WeightUnit> a = new Quantity<>(10, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> b = new Quantity<>(5, WeightUnit.KILOGRAM);
+
+        assertEquals(2.0, a.divide(b));
+    }
+
+    @Test
+    void testDivision_CrossUnit() {
+        Quantity<LengthUnit> inches = new Quantity<>(24, LengthUnit.INCHES);
+        Quantity<LengthUnit> feet = new Quantity<>(2, LengthUnit.FEET);
+
+        assertEquals(1.0, inches.divide(feet));
+    }
+
+    @Test
+    void testDivision_ByZero() {
+        Quantity<LengthUnit> a = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<LengthUnit> b = new Quantity<>(0, LengthUnit.FEET);
+
+        assertThrows(ArithmeticException.class, () -> a.divide(b));
+    }
+
+    @Test
+    void testDivision_CrossCategory() {
+        Quantity<LengthUnit> length = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<WeightUnit> weight = new Quantity<>(5, WeightUnit.KILOGRAM);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Quantity unsafe = (Quantity) weight;
+            length.divide(unsafe);
+        });
+    }
 }

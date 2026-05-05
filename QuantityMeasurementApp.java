@@ -25,8 +25,24 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        Quantity<LengthUnit> length1 = new Quantity<>(10, LengthUnit.FEET);
-        Quantity<LengthUnit> length2 = new Quantity<>(120, LengthUnit.INCHES);
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2,
+                                                   WeightUnit targetUnit) {
+        return w1.add(w2, targetUnit);
+    }
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(Quantity<U> q1, Quantity<U> q2) {
+        return q1.subtract(q2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(Quantity<U> q1, Quantity<U> q2, U targetUnit) {
+        return q1.subtract(q2, targetUnit);
+    }
+
+    public static <U extends IMeasurable> double
+    demonstrateDivision(Quantity<U> q1, Quantity<U> q2) {
+        return q1.divide(q2);
+    }
 
         System.out.println("Length equal: " +
                 demonstrateEquality(length1, length2));
