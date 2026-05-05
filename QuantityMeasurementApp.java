@@ -32,6 +32,20 @@ public class QuantityMeasurementApp {
                                                    WeightUnit targetUnit) {
         return w1.add(w2, targetUnit);
     }
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(Quantity<U> q1, Quantity<U> q2) {
+        return q1.subtract(q2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(Quantity<U> q1, Quantity<U> q2, U targetUnit) {
+        return q1.subtract(q2, targetUnit);
+    }
+
+    public static <U extends IMeasurable> double
+    demonstrateDivision(Quantity<U> q1, Quantity<U> q2) {
+        return q1.divide(q2);
+    }
 
     // ===== MAIN =====
 
