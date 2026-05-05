@@ -1,175 +1,191 @@
 package com.apps.quantitymeasurement;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityMeasurementAppTest {
-
-    // ===== WEIGHT TESTS =====
-
     @Test
-    public void kilogramEquals1000Grams() {
-        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000, WeightUnit.GRAM);
-        assertEquals(w1, w2);
+    public void lengthFeetEqualsInches() {
+        Quantity<LengthUnit> feet = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<LengthUnit> inches = new Quantity<>(120, LengthUnit.INCHES);
+
+        assertEquals(feet, inches);
     }
 
     @Test
-    public void poundEquals453Point592Grams() {
-        Weight w1 = new Weight(1, WeightUnit.POUND);
-        Weight w2 = new Weight(453.592, WeightUnit.GRAM);
-        assertEquals(w1, w2);
+    public void lengthYardsEqualsFeet() {
+        Quantity<LengthUnit> yards = new Quantity<>(1, LengthUnit.YARDS);
+        Quantity<LengthUnit> feet = new Quantity<>(3, LengthUnit.FEET);
+
+        assertEquals(yards, feet);
+    }
+    @Test
+    public void weightKilogramEqualsGrams() {
+        Quantity<WeightUnit> kg = new Quantity<>(1, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> grams = new Quantity<>(1000, WeightUnit.GRAM);
+
+        assertEquals(kg, grams);
     }
 
     @Test
-    public void tonneEquals1000000Grams() {
-        Weight w1 = new Weight(1, WeightUnit.TONNE);
-        Weight w2 = new Weight(1_000_000, WeightUnit.GRAM);
-        assertEquals(w1, w2);
+    public void weightPoundEqualsGrams() {
+        Quantity<WeightUnit> pound = new Quantity<>(1, WeightUnit.POUND);
+        Quantity<WeightUnit> grams = new Quantity<>(453.592, WeightUnit.GRAM);
+
+        assertEquals(pound, grams);
+    }
+    @Test
+    public void convertLengthFeetToInches() {
+        Quantity<LengthUnit> feet = new Quantity<>(10, LengthUnit.FEET);
+
+        double result = feet.convertTo(LengthUnit.INCHES);
+
+        assertEquals(120.0, result);
     }
 
     @Test
-    public void kilogramNotEqualToPound() {
-        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1, WeightUnit.POUND);
-        assertNotEquals(w1, w2);
+    public void convertWeightKilogramsToGrams() {
+        Quantity<WeightUnit> kg = new Quantity<>(2, WeightUnit.KILOGRAM);
+
+        double result = kg.convertTo(WeightUnit.GRAM);
+
+        assertEquals(2000.0, result);
     }
 
     @Test
-    public void additionOfWeightsEqualsExpected() {
-        Weight w1 = new Weight(500, WeightUnit.GRAM);
-        Weight w2 = new Weight(500, WeightUnit.GRAM);
-        Weight result = w1.add(w2);
+    public void convertLengthYardsToInches() {
+        Quantity<LengthUnit> yards = new Quantity<>(1, LengthUnit.YARDS);
 
-        assertEquals(new Weight(1000, WeightUnit.GRAM), result);
+        double result = yards.convertTo(LengthUnit.INCHES);
+
+        assertEquals(36.0, result);
+    }
+    @Test
+    public void addLengthFeetAndInches() {
+        Quantity<LengthUnit> feet = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<LengthUnit> inches = new Quantity<>(120, LengthUnit.INCHES);
+
+        Quantity<LengthUnit> result = feet.add(inches);
+
+        assertEquals(20.0, result.getValue());
+        assertEquals(LengthUnit.FEET, result.getUnit());
     }
 
     @Test
-    public void additionWithTargetUnit() {
-        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(500, WeightUnit.GRAM);
+    public void addLengthYardsAndFeet() {
+        Quantity<LengthUnit> yards = new Quantity<>(1, LengthUnit.YARDS);
+        Quantity<LengthUnit> feet = new Quantity<>(3, LengthUnit.FEET);
 
-        Weight result = w1.add(w2, WeightUnit.KILOGRAM);
+        Quantity<LengthUnit> result = yards.add(feet);
 
-        assertEquals(new Weight(1.5, WeightUnit.KILOGRAM), result);
+        assertEquals(2.0, result.getValue());
+        assertEquals(LengthUnit.YARDS, result.getUnit());
+    }
+    @Test
+    public void addWeightKilogramsAndGrams() {
+        Quantity<WeightUnit> kg = new Quantity<>(1, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> grams = new Quantity<>(500, WeightUnit.GRAM);
+
+        Quantity<WeightUnit> result = kg.add(grams);
+
+        assertEquals(1.5, result.getValue());
+        assertEquals(WeightUnit.KILOGRAM, result.getUnit());
     }
 
     @Test
-    public void convertKilogramToGram() {
-        Weight result = new Weight(1, WeightUnit.KILOGRAM)
-                .convertTo(WeightUnit.GRAM);
+    public void addWeightKilogramsAndPounds() {
+        Quantity<WeightUnit> kg = new Quantity<>(1, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> pounds = new Quantity<>(2.20462, WeightUnit.POUND);
 
-        assertEquals(new Weight(1000, WeightUnit.GRAM), result);
-    }
+        Quantity<WeightUnit> result = kg.add(pounds, WeightUnit.KILOGRAM);
 
-    // ===== LENGTH TESTS =====
-
-    @Test
-    public void testFeetEquality() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(12, LengthUnit.INCHES);
-        assertEquals(l1, l2);
+        assertEquals(2.0, result.getValue());
+        assertEquals(WeightUnit.KILOGRAM, result.getUnit());
     }
 
     @Test
-    public void testInchesEquality() {
-        Length l1 = new Length(36, LengthUnit.INCHES);
-        Length l2 = new Length(1, LengthUnit.YARDS);
-        assertEquals(l1, l2);
+    public void addWeightTonnesAndKilograms() {
+        Quantity<WeightUnit> tonne = new Quantity<>(1, WeightUnit.TONNE);
+        Quantity<WeightUnit> kg = new Quantity<>(1000, WeightUnit.KILOGRAM);
+
+        Quantity<WeightUnit> result = tonne.add(kg, WeightUnit.TONNE);
+
+        assertEquals(2.0, result.getValue());
+    }
+    @Test
+    public void preventCrossTypeComparisonLengthVsWeight() {
+        Quantity<LengthUnit> length = new Quantity<>(1, LengthUnit.FEET);
+        Quantity<WeightUnit> weight = new Quantity<>(1, WeightUnit.KILOGRAM);
+
+        assertNotEquals(length, weight);
     }
 
     @Test
-    public void testFeetInchesComparison() {
-        assertTrue(
-            QuantityMeasurementApp.demonstrateLengthComparison(
-                1, LengthUnit.FEET,
-                12, LengthUnit.INCHES
-            )
-        );
+    public void preventCrossTypeAdditionLengthVsWeight() {
+        Quantity<LengthUnit> length = new Quantity<>(1, LengthUnit.FEET);
+        Quantity<WeightUnit> weight = new Quantity<>(1, WeightUnit.KILOGRAM);
+
+        assertThrows(ClassCastException.class, () -> {
+            // Forced unsafe cast to simulate misuse
+            Quantity unsafe = (Quantity) weight;
+            length.add(unsafe);
+        });
     }
 
     @Test
-    public void testFeetInequality() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(13, LengthUnit.INCHES);
-        assertNotEquals(l1, l2);
+    public void preventCrossTypeConversionLengthToWeight() {
+        Quantity<LengthUnit> length = new Quantity<>(1, LengthUnit.FEET);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            length.convertTo((LengthUnit) (Object) WeightUnit.KILOGRAM);
+        });
+    }
+    @Test
+    public void backwardCompatibilityLengthFeetEqualsInches() {
+        Quantity<LengthUnit> feet = new Quantity<>(10, LengthUnit.FEET);
+        Quantity<LengthUnit> inches = new Quantity<>(120, LengthUnit.INCHES);
+
+        assertTrue(feet.equals(inches));
     }
 
     @Test
-    public void testCrossUnitInequality() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(1, LengthUnit.YARDS);
-        assertNotEquals(l1, l2);
+    public void backwardCompatibilityWeightKilogramEqualsGrams() {
+        Quantity<WeightUnit> kg = new Quantity<>(1, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> grams = new Quantity<>(1000, WeightUnit.GRAM);
+
+        assertTrue(kg.equals(grams));
     }
 
     @Test
-    public void yardEquals36Inches() {
-        Length l1 = new Length(1, LengthUnit.YARDS);
-        Length l2 = new Length(36, LengthUnit.INCHES);
-        assertEquals(l1, l2);
+    public void backwardCompatibilityAddLengthInSameUnit() {
+        Quantity<LengthUnit> a = new Quantity<>(5, LengthUnit.FEET);
+        Quantity<LengthUnit> b = new Quantity<>(5, LengthUnit.FEET);
+
+        Quantity<LengthUnit> result = a.add(b);
+
+        assertEquals(10.0, result.getValue());
     }
 
     @Test
-    public void centimeterEqualsInches() {
-        Length l1 = new Length(2.54, LengthUnit.CENTIMETERS);
-        Length l2 = new Length(1, LengthUnit.INCHES);
-        assertEquals(l1, l2);
+    public void backwardCompatibilityAddWeightInSameUnit() {
+        Quantity<WeightUnit> a = new Quantity<>(500, WeightUnit.GRAM);
+        Quantity<WeightUnit> b = new Quantity<>(500, WeightUnit.GRAM);
+
+        Quantity<WeightUnit> result = a.add(b);
+
+        assertEquals(1000.0, result.getValue());
     }
 
     @Test
-    public void threeFeetEqualsOneYard() {
-        Length l1 = new Length(3, LengthUnit.FEET);
-        Length l2 = new Length(1, LengthUnit.YARDS);
-        assertEquals(l1, l2);
-    }
+    public void backwardCompatibilityChainedAdditionsLength() {
+        Quantity<LengthUnit> a = new Quantity<>(1, LengthUnit.FEET);
+        Quantity<LengthUnit> b = new Quantity<>(12, LengthUnit.INCHES);
+        Quantity<LengthUnit> c = new Quantity<>(1, LengthUnit.YARDS);
 
-    @Test
-    public void convertFeetToInches() {
-        Length result = new Length(1, LengthUnit.FEET)
-                .convertTo(LengthUnit.INCHES);
+        Quantity<LengthUnit> result = a.add(b).add(c);
 
-        assertEquals(new Length(12, LengthUnit.INCHES), result);
-    }
-
-    @Test
-    public void addFeetAndInches() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(6, LengthUnit.INCHES);
-
-        Length result = l1.add(l2);
-
-        assertEquals(new Length(1.5, LengthUnit.FEET), result);
-    }
-
-    @Test
-    public void addFeetAndInchesWithTargetUnitInches() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(6, LengthUnit.INCHES);
-
-        Length result = l1.add(l2, LengthUnit.INCHES);
-
-        assertEquals(new Length(18, LengthUnit.INCHES), result);
-    }
-
-    // ===== EDGE CASES =====
-
-    @Test
-    public void referenceEqualitySameObject() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        assertEquals(l1, l1);
-    }
-
-    @Test
-    public void equalsReturnsFalseForNull() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        assertNotEquals(null, l1);
-    }
-
-    @Test
-    public void differentValuesSameUnitNotEqual() {
-        Length l1 = new Length(1, LengthUnit.FEET);
-        Length l2 = new Length(2, LengthUnit.FEET);
-        assertNotEquals(l1, l2);
+        assertEquals(5.0, result.getValue()); // 1ft + 1ft + 3ft = 5ft
     }
 
     @Test

@@ -2,31 +2,28 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
-    // ===== WEIGHT METHODS =====
-
-    public static boolean demonstrateWeightEquality(Weight w1, Weight w2) {
-        return w1.equals(w2);
+    public static <U extends IMeasurable> boolean demonstrateEquality(
+            Quantity<U> q1, Quantity<U> q2) {
+        return q1.equals(q2);
     }
 
-    public static boolean demonstrateWeightComparison(double v1, WeightUnit u1,
-                                                      double v2, WeightUnit u2) {
-        return new Weight(v1, u1).equals(new Weight(v2, u2));
+    public static <U extends IMeasurable> Quantity<U> demonstrateConversion(
+            Quantity<U> quantity, U targetUnit) {
+        double converted = quantity.convertTo(targetUnit);
+        return new Quantity<>(converted, targetUnit);
     }
 
-    public static Weight demonstrateWeightConversion(double value,
-                                                     WeightUnit from,
-                                                     WeightUnit to) {
-        return new Weight(value, from).convertTo(to);
+    public static <U extends IMeasurable> Quantity<U> demonstrateAddition(
+            Quantity<U> q1, Quantity<U> q2) {
+        return q1.add(q2);
     }
 
-    public static Weight demonstrateWeightConversion(Weight weight,
-                                                     WeightUnit to) {
-        return weight.convertTo(to);
+    public static <U extends IMeasurable> Quantity<U> demonstrateAddition(
+            Quantity<U> q1, Quantity<U> q2, U targetUnit) {
+        return q1.add(q2, targetUnit);
     }
 
-    public static Weight demonstrateWeightAddition(Weight w1, Weight w2) {
-        return w1.add(w2);
-    }
+    public static void main(String[] args) {
 
     public static Weight demonstrateWeightAddition(Weight w1, Weight w2,
                                                    WeightUnit targetUnit) {
@@ -47,19 +44,25 @@ public class QuantityMeasurementApp {
         return q1.divide(q2);
     }
 
-    // ===== MAIN =====
+        System.out.println("Length equal: " +
+                demonstrateEquality(length1, length2));
 
-    public static void main(String[] args) {
+        Quantity<WeightUnit> weight1 = new Quantity<>(1, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> weight2 = new Quantity<>(1000, WeightUnit.GRAM);
 
-        Weight w1 = new Weight(1, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000, WeightUnit.GRAM);
+        System.out.println("Weight equal: " +
+                demonstrateEquality(weight1, weight2));
 
-        System.out.println("Equal? " + demonstrateWeightEquality(w1, w2));
+        System.out.println("10 feet in inches: " +
+                length1.convertTo(LengthUnit.INCHES));
 
-        Weight converted = demonstrateWeightConversion(2, WeightUnit.POUND, WeightUnit.GRAM);
-        System.out.println("2 pounds in grams: " + converted);
+        System.out.println("Total length: " +
+                demonstrateAddition(length1, length2));
 
-        Weight sum = demonstrateWeightAddition(w1, w2, WeightUnit.KILOGRAM);
-        System.out.println("Sum in kg: " + sum);
+        Quantity<WeightUnit> pounds =
+                new Quantity<>(2.2, WeightUnit.POUND);
+
+        System.out.println("Total weight in kg: " +
+                demonstrateAddition(weight1, pounds, WeightUnit.KILOGRAM));
     }
 }
